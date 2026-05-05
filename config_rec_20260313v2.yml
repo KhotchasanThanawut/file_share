@@ -1,0 +1,200 @@
+Global:
+  model_name: PP-OCRv5_server_rec
+  debug: false
+  use_gpu: true
+  epoch_num: 400
+  log_smooth_window: 20
+  print_batch_step: 10
+  save_model_dir: ./output/PP-OCRv5_server_rec_20260312v4
+  save_epoch_step: 10
+  eval_batch_step:
+  - 0
+  - 200
+  cal_metric_during_train: true
+  calc_epoch_interval: 1
+  pretrained_model: /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/PP-OCRv5_server_rec_pretrained.pdparams
+  checkpoints: /home/anda/ppocr/PaddleOCR/output/PP-OCRv5_server_rec_20260312v4/latest
+  save_inference_dir: /home/anda/ppocr/PaddleOCR/inference/
+  use_visualdl: true
+  infer_img: doc/imgs_words/ch/word_1.jpg
+  character_dict_path: /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/th_dict.txt
+  max_text_length: 25
+  infer_mode: false
+  use_space_char: true
+  distributed: true
+  save_res_path: ./output/rec/predicts_ppocrv5.txt
+  d2s_train_image_shape:
+  - 3
+  - 48
+  - 320
+Optimizer:
+  name: Adam
+  beta1: 0.9
+  beta2: 0.999
+  lr:
+    name: Cosine
+    learning_rate: 0.0001
+    warmup_epoch: 1
+  regularizer:
+    name: L2
+    factor: 0.0001
+Architecture:
+  model_type: rec
+  algorithm: SVTR_HGNet
+  Transform: null
+  Backbone:
+    name: PPHGNetV2_B4
+    text_rec: true
+  Head:
+    name: MultiHead
+    head_list:
+    - CTCHead:
+        Neck:
+          name: svtr
+          dims: 120
+          depth: 2
+          hidden_dims: 120
+          kernel_size:
+          - 1
+          - 3
+          use_guide: true
+        Head:
+          fc_decay: 0.0001
+    - NRTRHead:
+        nrtr_dim: 384
+        max_text_length: 25
+Loss:
+  name: MultiLoss
+  loss_config_list:
+  - CTCLoss: null
+  - NRTRLoss: null
+PostProcess:
+  name: CTCLabelDecode
+Metric:
+  name: RecMetric
+  main_indicator: acc
+Train:
+  dataset:
+    name: MultiScaleDataSet
+    ds_width: false
+    data_dir: /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/
+    ext_op_transform_idx: 1
+    label_file_list:
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_001/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_002/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_003/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_004/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_005/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_006/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_007/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_008/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_009/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_010/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_011/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_014/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_015/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_016/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_017/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_018/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_019/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_020/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_021/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_022/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_023/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_024/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_025/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_026/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_031/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_032/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_033/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_truck01/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_new01/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img1/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img2/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img3/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img4/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img5/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img6/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img7/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img8/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img9/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img10/rec_gt.txt
+    transforms:
+    - DecodeImage:
+        img_mode: BGR
+        channel_first: false
+    - RecAug:
+        use_tia: true
+        aug_prob: 0.6
+    - RecConAug:
+        prob: 0.5
+        ext_data_num: 1
+        image_shape:
+        - 3
+        - 48
+        - 320
+    - MultiLabelEncode:
+        gtc_encode: NRTRLabelEncode
+    - KeepKeys:
+        keep_keys:
+        - image
+        - label_ctc
+        - label_gtc
+        - length
+        - valid_ratio
+  sampler:
+    name: MultiScaleSampler
+    scales:
+    - - 320
+      - 32
+    - - 320
+      - 48
+    - - 320
+      - 64
+    first_bs: 128
+    fix_bs: false
+    divided_factor:
+    - 8
+    - 16
+    is_training: true
+  loader:
+    shuffle: true
+    batch_size_per_card: 128
+    drop_last: true
+    num_workers: 8
+Eval:
+  dataset:
+    name: SimpleDataSet
+    data_dir: /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/
+    label_file_list:
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_new02/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_027/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_028/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_029/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img_car1_030/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img11/rec_gt.txt
+    - /home/anda/ppocr/PaddleOCR/configs/rec/PP-OCRv5/train_data/crop_img12/rec_gt.txt
+    transforms:
+    - DecodeImage:
+        img_mode: BGR
+        channel_first: false
+    - MultiLabelEncode:
+        gtc_encode: NRTRLabelEncode
+    - RecResizeImg:
+        image_shape:
+        - 3
+        - 48
+        - 320
+    - KeepKeys:
+        keep_keys:
+        - image
+        - label_ctc
+        - label_gtc
+        - length
+        - valid_ratio
+  loader:
+    shuffle: false
+    drop_last: false
+    batch_size_per_card: 64
+    num_workers: 4
+profiler_options: null

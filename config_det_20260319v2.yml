@@ -1,0 +1,226 @@
+Global:
+  model_name: PP-OCRv5_server_det
+  debug: false
+  use_gpu: true
+  epoch_num: 150
+  log_smooth_window: 20
+  print_batch_step: 10
+  save_model_dir: ./output/PP-OCRv5_server_det_20260319v2
+  save_epoch_step: 10
+  eval_batch_step:
+  - 0
+  - 700
+  cal_metric_during_train: false
+  checkpoints: null
+  pretrained_model: /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/PP-OCRv5_server_det_pretrained.pdparams
+  save_inference_dir: null
+  use_visualdl: false
+  infer_img: doc/imgs_en/img_10.jpg
+  save_res_path: ./checkpoints/det_db/predicts_db.txt
+  distributed: true
+Architecture:
+  model_type: det
+  algorithm: DB
+  Transform: null
+  Backbone:
+    name: PPHGNetV2_B4
+    det: true
+  Neck:
+    name: LKPAN
+    out_channels: 256
+    intracl: true
+  Head:
+    name: PFHeadLocal
+    k: 50
+    mode: large
+Loss:
+  name: DBLoss
+  balance_loss: true
+  main_loss_type: DiceLoss
+  alpha: 5
+  beta: 10
+  ohem_ratio: 3
+Optimizer:
+  name: Adam
+  beta1: 0.9
+  beta2: 0.999
+  lr:
+    name: Cosine
+    learning_rate: 0.0001
+    warmup_epoch: 2
+  regularizer:
+    name: L2
+    factor: 1e-6
+PostProcess:
+  name: DBPostProcess
+  thresh: 0.3
+  box_thresh: 0.6
+  max_candidates: 1000
+  unclip_ratio: 1.5
+Metric:
+  name: DetMetric
+  main_indicator: hmean
+Train:
+  dataset:
+    name: SimpleDataSet
+    data_dir: /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/
+    label_file_list:
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/output_001/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/output_002/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/output_003/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/output_004/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/output_005/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/output_006/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/output_007/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/output_008/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/output_009/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/output_010/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/output_011/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/output_014/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/output_015/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/output_016/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/output_017/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/output_018/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/output_019/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/output_020/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/output_021/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/output_022/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/output_023/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/output_024/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/output_026/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/output_032/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/output_033/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/images_20260318/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/folder_1/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/folder_2/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/2025-12-16_output/Label.txt
+    ratio_list:
+    - 1.0
+    - 1.0
+    - 1.0
+    - 1.0
+    - 1.0
+    - 1.0
+    - 1.0
+    - 1.0
+    - 1.0
+    - 1.0
+    - 1.0
+    - 1.0
+    - 1.0
+    - 1.0
+    - 1.0
+    - 1.0
+    - 1.0
+    - 1.0
+    - 1.0
+    - 1.0
+    - 1.0
+    - 1.0
+    - 1.0
+    - 1.0
+    - 1.0
+    - 1.0
+    - 1.0
+    - 1.0
+    - 1.0
+    transforms:
+    - DecodeImage:
+        img_mode: BGR
+        channel_first: false
+    - DetLabelEncode: null
+    - CopyPaste: null
+    - IaaAugment:
+        augmenter_args:
+        - type: Fliplr
+          args:
+            p: 0.5
+        - type: Affine
+          args:
+            rotate:
+            - -10
+            - 10
+        - type: Resize
+          args:
+            size:
+            - 0.5
+            - 3
+    - EastRandomCropData:
+        size:
+        - 640
+        - 640
+        max_tries: 50
+        keep_ratio: true
+    - MakeBorderMap:
+        shrink_ratio: 0.4
+        thresh_min: 0.3
+        thresh_max: 0.7
+        total_epoch: 150
+    - MakeShrinkMap:
+        shrink_ratio: 0.4
+        min_text_size: 8
+        total_epoch: 150
+    - NormalizeImage:
+        scale: 1./255.
+        mean:
+        - 0.485
+        - 0.456
+        - 0.406
+        std:
+        - 0.229
+        - 0.224
+        - 0.225
+        order: hwc
+    - ToCHWImage: null
+    - KeepKeys:
+        keep_keys:
+        - image
+        - threshold_map
+        - threshold_mask
+        - shrink_map
+        - shrink_mask
+  loader:
+    shuffle: true
+    drop_last: false
+    batch_size_per_card: 12
+    num_workers: 8
+Eval:
+  dataset:
+    name: SimpleDataSet
+    data_dir: /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/
+    label_file_list:
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/output_027/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/output_028/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/output_029/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/output_030/Label.txt
+    - /home/anda/ppocr/PaddleOCR/configs/det/PP-OCRv5/train_data/output_031/Label.txt
+    transforms:
+    - DecodeImage:
+        img_mode: BGR
+        channel_first: false
+    - DetLabelEncode: null
+    - DetResizeForTest: null
+    - NormalizeImage:
+        scale: 1./255.
+        mean:
+        - 0.485
+        - 0.456
+        - 0.406
+        std:
+        - 0.229
+        - 0.224
+        - 0.225
+        order: hwc
+    - ToCHWImage: null
+    - KeepKeys:
+        keep_keys:
+        - image
+        - shape
+        - polys
+        - ignore_tags
+  loader:
+    shuffle: false
+    drop_last: false
+    batch_size_per_card: 1
+    num_workers: 2
+profiler_options: null
